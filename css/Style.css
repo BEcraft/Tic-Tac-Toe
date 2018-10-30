@@ -1,0 +1,58 @@
+* {
+    font-family: Game;
+}
+
+.menu fieldset {
+    background-color: rgba(255, 87, 51, 0.1);
+}
+
+input {
+    outline: none;
+}
+
+h3, input {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 800;
+}
+
+header {
+    text-align: center;
+    color: #40160D;
+}
+
+.menu input[type=text] {
+    border: none;
+    background-color: rgba(255, 255, 255, 0);
+    animation-name: text;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.menu input[type=text], input[name=play] {
+    display: block;
+    height: 30px;
+    position: relative;
+    text-align: center;
+    left: 50%;
+    margin-top: 10px;
+    transform: translate(-50%, 0);
+}
+
+@font-face {
+    font-family: Game;
+    src: url(font/libel_suit.ttf);
+}
+
+@keyframes text {
+    0% {
+        color: rgba(0, 0, 0, 0.8);
+    }
+    50% {
+        color: rgba(0, 0, 0, 0.5);
+    }
+    100% {
+        color: rgba(0, 0, 0, 0.8);
+    }
+}
