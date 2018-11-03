@@ -73,12 +73,12 @@ if (isset($_SESSION) or ($_SESSION["one"] and $_SESSION["two"])) {
     $html = array(
         "<div>" => "<div class='play'>",
         "<turn>" => "<h3> Turn: <span style='color: " . $user->getColour() . ";'>" . $user->getName() . "</span></h3><br />",
-        "<form>" => "<form action='" . SERVER . "Playground.php' method='GET'>"
+        "<form>" => "<form action='" . SERVER . "Playground.php' method='GET' id='center'><table border='5' rols='3'><tr>"
     );
     for ($i = 0; $i < 9; ++$i) {
 
         if ($i !== 0 and ($i % 3) === 0) {
-            $html["<form>"] .= "<br />";
+            $html["<form>"] .= "</tr>" . ($i !== 8 ? "<tr>" : "");
         }
 
         if ($_SESSION["table"][$i] !== 0) {
@@ -95,10 +95,10 @@ if (isset($_SESSION) or ($_SESSION["one"] and $_SESSION["two"])) {
             }
         }
 
-        $html["<form>"] .= "<input type='submit' name='play{$i}' value='{$value}' style='color: " . ($colour ?? "black") . ";'>";
+        $html["<form>"] .= "<td><input type='submit' name='play{$i}' value='{$value}' style='color: " . ($colour ?? "black") . ";'></td>";
 
         if ($i === 8) {
-            $html["<form>"] .= "<input type='submit' name='reset' value='RESET'>";
+            $html["<form>"] .= "</table><input type='submit' name='reset' id='center' value='RESET'>";
             $html["<form>"] .= "</form></div>";
         }
 
@@ -147,15 +147,18 @@ function finish($session = false) {
                  *   v v v
                  */
                 if ($i <= 2) {
-                    $counter = 0;
+                    $counter = array();
                     $compass = $i;
                     for ($o = 0; $o < 3; ++$o) {
                         if ($_SESSION["table"][$compass] !== 0 and $_SESSION["table"][$compass] === $_SESSION["table"][$i]) {
-                            $counter++;
+                            $counter[] = $compass;
                         }
                         $compass += 3;
                     }
-                    if ($counter === 3) {
+                    if (count($counter) === 3) {
+                        foreach($counter as $index) {
+                            $html["<form>"] = str_replace("name='play{$index}'", "name='play{$index}' style='background-color:rgba(100, 200, 50, 0.5); color:white;' ", $html["<form>"]);
+                        }
                         $over = "Vertical";
                         break;
                     }
@@ -167,13 +170,16 @@ function finish($session = false) {
                  *    < -- >
                  */
                 if ($i === 0 or $i === 3 or $i === 6) {
-                    $counter = 0;
+                    $counter = array();
                     for ($o = $i; $o < ($i + 3); ++$o) {
                         if ($_SESSION["table"][$o] !== 0 and $_SESSION["table"][$o] === $_SESSION["table"][$i]) {
-                            $counter++;
+                            $counter[] = $o;
                         }
                     }
-                    if ($counter === 3) {
+                    if (count($counter) === 3) {
+                        foreach($counter as $index) {
+                            $html["<form>"] = str_replace("name='play{$index}'", "name='play{$index}' style='background-color:rgba(100, 200, 50, 0.5); color:white;' ", $html["<form>"]);
+                        }
                         $over = "Horizontal";
                         break;
                     }
@@ -185,15 +191,18 @@ function finish($session = false) {
                  *   /   \
                  */
                 if ($i === 0 or $i === 2) {
-                    $counter = 0;
+                    $counter = array();
                     $compass = $i;
                     for ($o = 0; $o < 3; ++$o) {
                         if ($_SESSION["table"][$compass] !== 0 and $_SESSION["table"][$compass] === $_SESSION["table"][$i]) {
-                            $counter++;
+                            $counter[] = $compass;
                         }
                         $compass += ($i === 0) ? 4 : 2;
                     }
-                    if ($counter === 3) {
+                    if (count($counter) === 3) {
+                        foreach($counter as $index) {
+                            $html["<form>"] = str_replace("name='play{$index}'", "name='play{$index}' style='background-color:rgba(100, 200, 50, 0.5); color:white;' ", $html["<form>"]);
+                        }
                         $over = "Diagonal";
                         break;
                     }
